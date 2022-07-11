@@ -1,0 +1,56 @@
+#@ load("@ytt:data", "data")
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bnp-demo
+  namespace: #@ data.values.namespace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bnpp-demo
+  template:
+    metadata:
+      labels:
+        app: bnpp-demo
+    spec:
+      containers:
+        - image: harbor.withtanzu.com/fmartin/bnpp-demo:latest
+          name: app
+          resources:
+            limits:
+              memory: 1Gi
+            requests:
+              cpu: "0.25"
+              memory: 512Mi
+              ephemeral-storage: "128Mi"
+          ports:
+            - containerPort: 8080
+          livenessProbe:
+            httpGet:
+              port: 8080
+              path: /actuator/health/liveness
+            initialDelaySeconds: 60
+            periodSeconds: 2
+          readinessProbe:
+            httpGet:
+              port: 8080
+              path: /actuator/health/readiness
+            initialDelaySeconds: 10
+          env:
+          - name: SPRING_DATASOURCE_URL
+            valueFrom:
+              secretKeyRef:
+                name: bnp-demo
+                key: db-url
+          - name: SPRING_DATASOURCE_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: bnp-demo
+                key: db-username
+          - name: SPRING_DATASOURCE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: bnp-demo
+                key: db-password

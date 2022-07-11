@@ -1,0 +1,21 @@
+#@ load("@ytt:data", "data")
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: bnpp-demo
+  labels: 
+    app : bnpp-demo
+  namespace: #@ data.values.namespace
+spec:
+  rules:
+  - host: #@ data.values.url
+    http:
+      paths:
+      - path: /
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: bnpp-demo
+            port:
+              number: 80

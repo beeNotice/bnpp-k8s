@@ -1,0 +1,18 @@
+apiVersion: kpack.io/v1alpha2
+kind: Image
+metadata:
+  name: bnpp-demo
+  namespace: dev
+spec:
+  tag: harbor.withtanzu.com/fmartin/bnpp-demo
+  builder:
+    name: default
+    kind: ClusterBuilder
+  source:
+    git:
+      url: https://github.com/beeNotice/bnpp-demo
+      revision: main
+  build:
+    env:
+    - name: BP_JVM_VERSION
+      value: "17.*"
