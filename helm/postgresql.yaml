@@ -1,0 +1,11 @@
+auth:
+  postgresPassword: "pgappuser"
+  username: "pgappuser"
+  password: "pgappuser"
+  database: "tanzu-app"
+resources:
+  requests:
+    memory: "500Mi"
+    cpu: "500m"
+persistence:
+  size: "5Gi"

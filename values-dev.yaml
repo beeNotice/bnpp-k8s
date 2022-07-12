@@ -5,3 +5,4 @@ url: "bnpp-demo-dev.tanzu.fmartin.tech"
 db_url: "jdbc:postgresql://tanzu-app-postgresql.bnpp-demo-dev.svc.cluster.local:5432/tanzu-app"
 db_username: "pgappuser"
 db_password: "pgappuser"
+
